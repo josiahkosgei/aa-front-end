@@ -5,7 +5,21 @@ import { BellIcon, MenuIcon, XIcon, PaperClipIcon } from '@heroicons/react/outli
 
 const navigation = ['Dashboard', 'Team', 'Projects', 'Calendar', 'Reports']
 const hospitalVisits = [{ visits: 7, hospital: 'Kiambiu' }, { visits: 12, hospital: 'Mukuru Kwa Ruben' }, { visits: 26, hospital: 'Mukuru Kwa Njenga' }, { visits: 38, hospital: 'Baba Dogo' }, { visits: 41, hospital: 'Kosovo' }, { visits: 24, hospital: 'Mukuru Kayaba' }]
+const keyIssues = [{ case: 'Wrong Prescription', hospital: 'Kiambiu' }, { case: 'Opened Late', hospital: 'Mukuru Kwa Ruben' }, { case: 'Bad receipts', hospital: 'Mukuru Kwa Njenga' }, { case: 'Late Check in', hospital: 'Baba Dogo' }, { case: 'Delay In Lab', hospital: 'Kosovo' }, { case: 'Careless Waste Disposal', hospital: 'Mukuru Kayaba' }]
 const profile = ['Your Profile', 'Settings', 'Sign out']
+
+const people = [
+  {
+    name: 'Jane Cooper',
+    title: 'Regional Paradigm Technician',
+    department: 'Optimization',
+    role: 'Admin',
+    email: 'jane.cooper@example.com',
+    image:
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
+  },
+  // More people...
+]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -194,7 +208,8 @@ function App() {
           {/* Page title ends */}
           <div className="container mx-auto py-6 md:w-9/10 w-11/12 px-6">
             <div className="flex gap-8 flex-nowrap justify-around h-5/6">
-              <div className="w-1/3 shadow bg-white">
+
+              <div className="w-1/4 shadow bg-white">
                 <div className="flex itemscenter justify-between w-full h-screen">
                   <div className="flex flex-col lg:flex-row w-full items-start lg:items-start rounded bg-white shadow">
                     <div className="w-full h-full dark:bg-gray-800 justify-start px-4 py-2">
@@ -238,20 +253,23 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="w-2/3 bg-gray-200">
+              <div className="w-3/4 bg-gray-200">
                 <div className="flex items-center justify-between w-full">
                   <div className="flex flex-col w-full">
                     <div className="w-full shadow rounded h-3/6 bg-white px-4 py-2">
                       <h4 className="text-sm font-bold leading-tight text-gray-300">KEY ISSUES</h4>
-                      <ul className="grid grid-cols-4 gap-1 w-full mb-4">
+                      <ul className="grid grid-cols-3 gap-1 w-full mb-4">
 
-                        {hospitalVisits.map((item, itemIdx) =>
+                        {keyIssues.map((item, itemIdx) =>
                           itemIdx === 0 ? (
                             <Fragment key={item.hospital}>
                               {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
                               <li className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
                                 <div className="w-0 flex-1 flex items-center">
-                                  <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-600 ">{item.visits}</span>  {item.hospital}</strong></span>
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900 truncate">{item.case}</div>
+                                    <div className="text-sm text-gray-500">{item.hospital}</div>
+                                  </div>
                                 </div>
                                 <div className="ml-4 flex-shrink-0">
                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -264,7 +282,10 @@ function App() {
 
                             <li key={item.hospital} className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
                               <div className="w-0 flex-1 flex items-center">
-                                <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-600">{item.visits}</span>  {item.hospital}</strong></span>
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900 truncate">{item.case}</div>
+                                  <div className="text-sm text-gray-500">{item.hospital}</div>
+                                </div>
                               </div>
                               <div className="ml-4 flex-shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -305,7 +326,7 @@ function App() {
                       <div className="grid grid-cols-3 gap-5 w-full mb-4">
                         <div className="bg-white border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Foot fall</h4>
-                           </div>
+                        </div>
                         <div className="bg-white border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Patient Satisfaction</h4>
                         </div>
@@ -317,39 +338,71 @@ function App() {
                     </div>
 
                     <div className="w-full shadow rounded h-3/6 bg-white px-4 py-2 mt-6">
-                      <h4 className="text-sm font-bold leading-tight text-gray-300">KEY ISSUES</h4>
-                      <ul className="grid grid-cols-4 gap-1 w-full mb-4">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
+                            >
+                              No
+                            </th>
 
-                        {hospitalVisits.map((item, itemIdx) =>
-                          itemIdx === 0 ? (
-                            <Fragment key={item.hospital}>
-                              {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                              <li className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
-                                <div className="w-0 flex-1 flex items-center">
-                                  <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-600 ">{item.visits}</span>  {item.hospital}</strong></span>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Staff Name
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Efficiency Delta
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              NPS Delta
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Efficiency
+                            </th>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Reported Issues
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {people.map((person, personIdx) => (
+                            <tr key={person.email}>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="flex-shrink-0 h-10 w-10">
+                                    {personIdx + 1}
+                                  </div>
                                 </div>
-                                <div className="ml-4 flex-shrink-0">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                  </svg>
-                                </div>
-                              </li>
-                            </Fragment>
-                          ) : (
-
-                            <li key={item.hospital} className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
-                              <div className="w-0 flex-1 flex items-center">
-                                <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-600">{item.visits}</span>  {item.hospital}</strong></span>
-                              </div>
-                              <div className="ml-4 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                </svg>
-                              </div>
-                            </li>
-                          )
-                        )}
-                      </ul>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{person.name}</div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {person.role}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                     {/* <div className="w-full lg:w-1/3 h-24 dark:border-gray-700 lg:h-5/6 border-t lg:border-t-0 lg:border-r lg:border-l lg:rounded-r dark:bg-gray-700 bg-gray-100" /> */}
                   </div>
