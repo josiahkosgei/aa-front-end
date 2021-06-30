@@ -25,7 +25,7 @@ function Stats(props: { data: { a: number; b: number; }[]; width: any; height: a
     .curve(d3?.curveCatmullRom.alpha(0.5))
 
   return (
-    <svg width={width} height={height}>
+    <svg width={width} height={height} fill="#000" fillOpacity="0.3">
       <path d={line(data as []) as string} stroke="#6d28d9" strokeWidth="3px" />
     </svg>
   )

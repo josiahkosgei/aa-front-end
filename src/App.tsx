@@ -318,13 +318,10 @@ function App() {
                         </div>
                         <div className="bg-white  border border-gray-200 rounded-md flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Revenue</h4>
-                          {(() => {
-                            if (revenueStats.loading) {
-                              <p>Loading...</p>;
-                            } else {
-                              <Stats data={revenueStats?.data?.revenueStats} width={200} height={300} />
-                            }
-                          })()}
+                          { 
+                           revenueStats.loading ? <p>Loading...</p> : <Stats data={revenueStats.data.revenueStats} width={200} height={300} />
+                          }
+
 
                         </div>
 
