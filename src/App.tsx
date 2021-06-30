@@ -372,41 +372,40 @@ function App() {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                          {userStats.data && (
-                            <>
-                              {userStats.data.userStats.map((person: any, personIdx: number) => (
-                                <tr key={person.name} className="border-none">
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                      <div className="flex-shrink-0 h-10 w-10">
-                                        {personIdx + 1}
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{person.name}</div>
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    {person.nps}
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.nps}</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.efficiency}%
-                                    <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
-                                      <div style={{ width: person.efficiency + "%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
+                        { 
+                           userStats.loading ? <tr className="border-none"><td>Loading...</td></tr> : userStats.data.userStats.map((person: any, personIdx: number) => (
+                            <tr key={person.name} className="border-none">
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="flex-shrink-0 h-10 w-10">
+                                    {personIdx + 1}
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{person.name}</div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                {person.nps}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.nps}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.efficiency}%
+                                <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
+                                  <div style={{ width: person.efficiency + "%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
 
-                                    </div>
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.reportedissues}
-                                    <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
-                                      <div style={{ width: (person.completed / person.reportedissues) * 100 + "%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.reportedissues}
+                                <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
+                                  <div style={{ width: (person.completed / person.reportedissues) * 100 + "%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
 
-                                    </div>
-                                  </td>
-                                </tr>
-                              )
-                              )}
-                            </>
-                          )}
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                          )
+                        
+                        }
                         </tbody>
                       </table>
                     </div>
