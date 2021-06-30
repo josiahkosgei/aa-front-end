@@ -1,8 +1,7 @@
 
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { Disclosure, Menu } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { addDays } from 'date-fns';
 import Stats from './Stats';
 
 import { GET_HOSPITALS_WITH_STATS, GET_KEY_ISSUES_WITH_STATS, GET_USER_STATS, GET_REVENUE_STATS } from './Queries';
