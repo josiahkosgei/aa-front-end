@@ -2,7 +2,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'react-date-range/dist/theme/default.css';
 
 .axis {
   stroke: #000;
