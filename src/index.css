@@ -3,8 +3,3 @@
 @tailwind components;
 @tailwind utilities;
 @import 'react-date-range/dist/theme/default.css';
-
- 
-  .gridline {
-    opacity: 0.2;
-  }
