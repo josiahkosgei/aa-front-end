@@ -1,31 +1,35 @@
 
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon, PaperClipIcon } from '@heroicons/react/outline'
+import { Fragment, useEffect, useState } from 'react';
+import { Disclosure, Menu } from '@headlessui/react'
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { addDays } from 'date-fns';
+import Stats from './Stats';
 
-const navigation = ['Dashboard', 'Team', 'Projects', 'Calendar', 'Reports']
-const hospitalVisits = [{ visits: 7, hospital: 'Kiambiu' }, { visits: 12, hospital: 'Mukuru Kwa Ruben' }, { visits: 26, hospital: 'Mukuru Kwa Njenga' }, { visits: 38, hospital: 'Baba Dogo' }, { visits: 41, hospital: 'Kosovo' }, { visits: 24, hospital: 'Mukuru Kayaba' }]
-const keyIssues = [{ case: 'Wrong Prescription', hospital: 'Kiambiu' }, { case: 'Opened Late', hospital: 'Mukuru Kwa Ruben' }, { case: 'Bad receipts', hospital: 'Mukuru Kwa Njenga' }, { case: 'Late Check in', hospital: 'Baba Dogo' }, { case: 'Delay In Lab', hospital: 'Kosovo' }, { case: 'Careless Waste Disposal', hospital: 'Mukuru Kayaba' }]
-const profile = ['Your Profile', 'Settings', 'Sign out']
+import { GET_HOSPITALS_WITH_STATS, GET_KEY_ISSUES_WITH_STATS, GET_USER_STATS, GET_REVENUE_STATS } from './Queries';
+import { useQuery } from '@apollo/client';
+import { ComplaintCategoryLabel } from './CommonTypes';
 
-const people = [
-  {
-    name: 'Jane Cooper',
-    title: 'Regional Paradigm Technician',
-    department: 'Optimization',
-    role: 'Admin',
-    email: 'jane.cooper@example.com',
-    image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-  },
-  // More people...
-]
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
 
 function App() {
+ const dummyStatsData = [
+   {a: 1, b: 3},
+   {a: 2, b: 6},
+   {a: 3, b: 2},
+   {a: 4, b: 12},
+   {a: 5, b: 8}
+ ]
+
+  const { data } = useQuery(GET_HOSPITALS_WITH_STATS);
+  const keyIssues = useQuery(GET_KEY_ISSUES_WITH_STATS);
+  const userStats = useQuery(GET_USER_STATS);
+  const revenueStats = useQuery(GET_REVENUE_STATS);
+
+  function getComplaintCategory(category: string) {
+    const key = ComplaintCategoryLabel.get(category);
+    console.log(key)
+    return key;
+  }
+
   return (
     <div className="">
       <main className="flex">
@@ -35,28 +39,28 @@ function App() {
           </div>
           <div className="px-8">
             <ul className="mt-12">
-              <li className="flex w-full justify-between text-gray-400 hover:text-purple-600 cursor-pointer items-center mb-6">
+              <li className="flex w-full justify-between text-gray-400 hover:text-purple-700 cursor-pointer items-center mb-6">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width={48} height={64} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
                 </div>
               </li>
-              <li className="flex w-full justify-between text-purple-600 hover:text-purple-600 cursor-pointer items-center mb-6">
+              <li className="flex w-full justify-between text-purple-700 hover:text-purple-700 cursor-pointer items-center mb-6">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width={48} height={64} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                 </div>
               </li>
-              <li className="flex w-full justify-between text-gray-400 hover:text-purple-600 cursor-pointer items-center mb-6">
+              <li className="flex w-full justify-between text-gray-400 hover:text-purple-700 cursor-pointer items-center mb-6">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width={48} height={64} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                   </svg>
                 </div>
               </li>
-              <li className="flex w-full justify-between text-gray-400 hover:text-purple-600 cursor-pointer items-center mb-6">
+              <li className="flex w-full justify-between text-gray-400 hover:text-purple-700 cursor-pointer items-center mb-6">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width={48} height={64} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -104,7 +108,7 @@ function App() {
 
                             <button className="focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                               <div className="ml3">
-                                <div className="text-base font-medium leading-none text-gray-800">Tom Cook</div>
+                                <div className="text-base font-medium leading-none text-gray-800">T Cook</div>
                                 <div className="text-sm font-medium leading-none text-gray-600">tom@accessafya.com</div>
                               </div>
                             </button>
@@ -144,24 +148,6 @@ function App() {
 
                     <Disclosure.Panel className="md:hidden">
                       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        {navigation.map((item, itemIdx) =>
-                          itemIdx === 0 ? (
-                            <Fragment key={item}>
-                              {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                              <a href="/" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
-                                {item}
-                              </a>
-                            </Fragment>
-                          ) : (
-                            <a
-                              key={item}
-                              href="/"
-                              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                            >
-                              {item}
-                            </a>
-                          )
-                        )}
                       </div>
                       <div className="pt-4 pb-3 border-t border-gray-700">
                         <div className="flex items-center px-5">
@@ -182,15 +168,6 @@ function App() {
                           </button>
                         </div>
                         <div className="mt-3 px-2 space-y-1">
-                          {profile.map((item) => (
-                            <a
-                              key={item}
-                              href="/"
-                              className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
-                            >
-                              {item}
-                            </a>
-                          ))}
                         </div>
                       </div>
                     </Disclosure.Panel>
@@ -199,57 +176,59 @@ function App() {
               </Disclosure>
             </div>
           </header>
-          {/* Page title starts */}
+        
           <div className="container mx-auto py-6 md:w-9/10 w-11/12 px-6">
             <div>
               <h5 className="text-2xl font-bold leading-tight text-gray-800">Analytics</h5>
             </div>
           </div>
-          {/* Page title ends */}
+        
           <div className="container mx-auto py-6 md:w-9/10 w-11/12 px-6">
             <div className="flex gap-8 flex-nowrap justify-around h-5/6">
 
               <div className="w-1/4 shadow bg-white">
                 <div className="flex itemscenter justify-between w-full h-screen">
-                  <div className="flex flex-col lg:flex-row w-full items-start lg:items-start rounded bg-white shadow">
-                    <div className="w-full h-full dark:bg-gray-800 justify-start px-4 py-2">
+                  <div className="flex flex-col lg:flex-row w-full items-start lg:items-start bg-white">
+                    <div className="w-full h-full dark:bg-gray-800 justify-start px-4">
                       <div className="flex w-1/4 justify-center">
                         <h6 className="text-sm font-bold leading-tight text-gray-300">VISITS</h6>
                       </div>
                       <ul className="flex flex-col items-center justify-items-stretch justify-center">
+                        {data && (
+                          <>
+                            {data.hospitalsWithStats.map((item: any, itemIdx: number) =>
+                              itemIdx === 0 ? (
 
-                        {hospitalVisits.map((item, itemIdx) =>
-                          itemIdx === 0 ? (
-                            <Fragment key={item.hospital}>
-                              {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                              <li className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
-                                <div className="w-0 flex-1 flex items-center">
-                                  <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-600 ">{item.visits}</span>  {item.hospital}</strong></span>
-                                </div>
-                                <div className="ml-4 flex-shrink-0">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                  </svg>
-                                </div>
-                              </li>
-                            </Fragment>
-                          ) : (
+                                <Fragment key={item.id}>
+                                  <li className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 group-hover:text-white hover:bg-purple-700 focus:border-purple-700 cursor-pointer mt-6">
+                                    <div className="w-0 flex-1 flex items-center hover:text-white">
+                                      <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-700 ">{item.admissionscount}</span>  {item.name}</strong></span>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0">
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                      </svg>
+                                    </div>
+                                  </li>
+                                </Fragment>
+                              ) : (
 
-                            <li key={item.hospital} className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
-                              <div className="w-0 flex-1 flex items-center">
-                                <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-600">{item.visits}</span>  {item.hospital}</strong></span>
-                              </div>
-                              <div className="ml-4 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                </svg>
-                              </div>
-                            </li>
-                          )
+                                <li key={item.id} className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-700 focus:border-purple-700 cursor-pointer mt-6">
+                                  <div className="w-0 flex-1 flex items-center hover:text-white">
+                                    <span className="ml-2 flex-1 w-0 truncate"><strong><span className="hover:text-white text-purple-700">{item.admissionscount}</span>  {item.name}</strong></span>
+                                  </div>
+                                  <div className="ml-4 flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                    </svg>
+                                  </div>
+                                </li>
+                              )
+                            )}
+                          </>
                         )}
                       </ul>
                     </div>
-                    {/* <div className="w-full lg:w-1/3 h-24 dark:border-gray-700 lg:h-5/6 border-t lg:border-t-0 lg:border-r lg:border-l lg:rounded-r dark:bg-gray-700 bg-gray-100" /> */}
                   </div>
                 </div>
               </div>
@@ -259,41 +238,43 @@ function App() {
                     <div className="w-full shadow rounded h-3/6 bg-white px-4 py-2">
                       <h4 className="text-sm font-bold leading-tight text-gray-300">KEY ISSUES</h4>
                       <ul className="grid grid-cols-3 gap-1 w-full mb-4">
+                        {keyIssues.data && (
+                          <>
+                            {keyIssues.data.keyComplaintsStats.map((item: any, itemIdx: number) =>
+                              itemIdx === 0 ? (
+                                <Fragment key={item.category}>
+                                  <li className="border-2 border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-gray-900 hover:border-purple-700 cursor-pointer mt-6 focus:border-purple-700">
+                                    <div className="w-0 flex-1 flex items-center">
+                                      <div className="ml-4">
+                                        <div className="text-sm font-medium text-gray-900 truncate">{getComplaintCategory(item.category)}</div>
+                                        <div className="text-xs text-gray-500">{item.name}</div>
+                                      </div>
+                                    </div>
+                                    <div className="ml-4 flex-shrink-0 hover:text-gray-900">
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                      </svg>
+                                    </div>
+                                  </li>
+                                </Fragment>
+                              ) : (
 
-                        {keyIssues.map((item, itemIdx) =>
-                          itemIdx === 0 ? (
-                            <Fragment key={item.hospital}>
-                              {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                              <li className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
-                                <div className="w-0 flex-1 flex items-center">
-                                  <div className="ml-4">
-                                    <div className="text-sm font-medium text-gray-900 truncate">{item.case}</div>
-                                    <div className="text-sm text-gray-500">{item.hospital}</div>
+                                <li key={item.category} className="border-2 border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-gray-900 hover:border-purple-700 cursor-pointer mt-6 focus:border-purple-700">
+                                  <div className="w-0 flex-1 flex items-center">
+                                    <div className="ml-4">
+                                      <div className="text-sm font-medium text-gray-900 truncate">{getComplaintCategory(item.category)}</div>
+                                      <div className="text-xs text-gray-500">{item.name}</div>
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="ml-4 flex-shrink-0">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                  </svg>
-                                </div>
-                              </li>
-                            </Fragment>
-                          ) : (
-
-                            <li key={item.hospital} className="border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white hover:bg-purple-600 cursor-pointer mt-6">
-                              <div className="w-0 flex-1 flex items-center">
-                                <div className="ml-4">
-                                  <div className="text-sm font-medium text-gray-900 truncate">{item.case}</div>
-                                  <div className="text-sm text-gray-500">{item.hospital}</div>
-                                </div>
-                              </div>
-                              <div className="ml-4 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                </svg>
-                              </div>
-                            </li>
-                          )
+                                  <div className="ml-4 flex-shrink-0 hover:text-gray-900">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                    </svg>
+                                  </div>
+                                </li>
+                              )
+                            )}
+                          </>
                         )}
                       </ul>
                     </div>
@@ -303,16 +284,21 @@ function App() {
                         <div className="w-4/5 flex gap-6">
                           <div className="w-3/5">
                             <div className="border border-gray-200 rounded-md inline-flex w-full" role="group" aria-label="Monitoring Period">
-                              <button className="h-10 px-5 text-indigo-100 transition-colors duration-150 rounded-l-lg focus:shadow-outline hover:bg-indigo-800">Day</button>
-                              <button className="h-10 px-5 text-indigo-100 transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800">Week</button>
-                              <button className="h-10 px-5 text-indigo-100 transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800">Month</button>
-                              <button className="h-10 px-5 text-indigo-100 transition-colors duration-150 rounded-r-lg focus:shadow-outline hover:bg-indigo-800">Year</button>
+                              <button className="border-2 h-10 w-1/4 px-5 text-gray-400 transition-colors duration-150 rounded-l-lg focus:border-purple-700">Day</button>
+                              <button className="border-2 h-10 w-1/4 px-5 text-gray-400 transition-colors duration-150 focus:border-purple-700">Week</button>
+                              <button className="border-2 h-10 w-1/4 px-5 text-gray-400 transition-colors duration-150 focus:border-purple-700">Month</button>
+                              <button className="border-2 h-10 w-1/4 px-5 text-gray-400 transition-colors duration-150 rounded-r-lg focus:border-purple-700">Year</button>
                             </div>
                           </div>
                           <div className="w-2/5">
-                            <div className="border border-gray-200 rounded-md inline-flex " role="group" aria-label="Button group">
-                              <button className="h-10 px-5 text-indigo-100 transition-colors duration-150 rounded-l-lg focus:shadow-outline hover:bg-indigo-800">Left</button>
-                              <button className="h-10 px-5 text-indigo-100 transition-colors duration-150 rounded-r-lg focus:shadow-outline hover:bg-indigo-800">Month</button>
+                          <div className="border border-gray-400 rounded-md inline-flex w-full text-purple-700" role="group" aria-label="Monitoring Period">
+                            
+                              <button className="h-10 w-1/5 px-5 transition-colors duration-150 rounded-l-lg focus:shadow-outline focus:border-purple-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </button>
+                              <button className="h-10 w-4/5 px-5 transition-colors duration-150 rounded-l-lg focus:shadow-outline focus:border-purple-700">10 Dec 2019 - 10 Jan 2020</button>
                             </div>
                           </div>
                         </div>
@@ -322,24 +308,27 @@ function App() {
                         </div>
                       </div>
                     </div>
-                    <div className="h-2/6 mt-6">
-                      <div className="grid grid-cols-3 gap-5 w-full mb-4">
-                        <div className="bg-white border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
+                    <div className="mt-6">
+                      <div className="flex gap-3 w-full mb-4">
+                        <div className="bg-white border border-gray-200 rounded-md flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Foot fall</h4>
+                          <Stats data={dummyStatsData} width={200} height={300} />
                         </div>
-                        <div className="bg-white border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
+                        <div className="bg-white  border border-gray-200 rounded-md flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Patient Satisfaction</h4>
+                          <Stats data={dummyStatsData} width={200} height={300} />
                         </div>
-                        <div className="bg-white border border-gray-200 rounded-md pl-3 pr-4 py-3 flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
+                        <div className="bg-white  border border-gray-200 rounded-md flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Revenue</h4>
+                          <Stats data={revenueStats?.data?.revenueStats} width={200} height={300} />
                         </div>
 
                       </div>
                     </div>
 
-                    <div className="w-full shadow rounded h-3/6 bg-white px-4 py-2 mt-6">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                    <div className="table w-full shadow rounded h-3/6 bg-white px-4 py-2 mt-6" style={{ overflow: 'auto' }}>
+                      <table className="w-full">
+                        <thead className="border-0 border-b border-solid">
                           <tr>
                             <th
                               scope="col"
@@ -381,8 +370,10 @@ function App() {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                          {people.map((person, personIdx) => (
-                            <tr key={person.email}>
+                        {userStats.data && (
+                          <>
+                            {userStats.data.userStats.map((person: any, personIdx: number) => (
+                            <tr key={person.name} className="border-none">
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                   <div className="flex-shrink-0 h-10 w-10">
@@ -394,17 +385,29 @@ function App() {
                                 <div className="text-sm text-gray-900">{person.name}</div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                {person.role}
+                                {person.nps}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.nps}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.efficiency}%
+                              <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
+                                <div style={{ width: person.efficiency+"%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
+
+                              </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.reportedissues}
+                              <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
+                                <div style={{ width: (person.completed/person.reportedissues)*100+"%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
+
+                              </div>
+                              </td>
                             </tr>
-                          ))}
+                            )
+                            )}
+                          </>
+                        )}
                         </tbody>
                       </table>
                     </div>
-                    {/* <div className="w-full lg:w-1/3 h-24 dark:border-gray-700 lg:h-5/6 border-t lg:border-t-0 lg:border-r lg:border-l lg:rounded-r dark:bg-gray-700 bg-gray-100" /> */}
                   </div>
                 </div>
               </div>
