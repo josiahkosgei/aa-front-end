@@ -10,13 +10,13 @@ import { ComplaintCategoryLabel } from './CommonTypes';
 
 
 function App() {
- const dummyStatsData = [
-   {a: 1, b: 3},
-   {a: 2, b: 6},
-   {a: 3, b: 2},
-   {a: 4, b: 12},
-   {a: 5, b: 8}
- ]
+  const dummyStatsData = [
+    { a: 1, b: 3 },
+    { a: 2, b: 6 },
+    { a: 3, b: 2 },
+    { a: 4, b: 12 },
+    { a: 5, b: 8 }
+  ]
 
   const { data } = useQuery(GET_HOSPITALS_WITH_STATS);
   const keyIssues = useQuery(GET_KEY_ISSUES_WITH_STATS);
@@ -25,7 +25,6 @@ function App() {
 
   function getComplaintCategory(category: string) {
     const key = ComplaintCategoryLabel.get(category);
-    console.log(key)
     return key;
   }
 
@@ -175,13 +174,13 @@ function App() {
               </Disclosure>
             </div>
           </header>
-        
+
           <div className="container mx-auto py-6 md:w-9/10 w-11/12 px-6">
             <div>
               <h5 className="text-2xl font-bold leading-tight text-gray-800">Analytics</h5>
             </div>
           </div>
-        
+
           <div className="container mx-auto py-6 md:w-9/10 w-11/12 px-6">
             <div className="flex gap-8 flex-nowrap justify-around h-5/6">
 
@@ -290,13 +289,13 @@ function App() {
                             </div>
                           </div>
                           <div className="w-2/5">
-                          <div className="border border-gray-400 rounded-md inline-flex w-full text-purple-700" role="group" aria-label="Monitoring Period">
-                            
+                            <div className="border border-gray-400 rounded-md inline-flex w-full text-purple-700" role="group" aria-label="Monitoring Period">
+
                               <button className="h-10 w-1/5 px-5 transition-colors duration-150 rounded-l-lg focus:shadow-outline focus:border-purple-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                            </button>
+                              </button>
                               <button className="h-10 w-4/5 px-5 transition-colors duration-150 rounded-l-lg focus:shadow-outline focus:border-purple-700">10 Dec 2019 - 10 Jan 2020</button>
                             </div>
                           </div>
@@ -319,7 +318,14 @@ function App() {
                         </div>
                         <div className="bg-white  border border-gray-200 rounded-md flex items-center text-sm flex w-10/12 text-gray-400 hover:text-white cursor-pointer mt-6">
                           <h4 className="text-sm font-bold leading-tight text-gray-700">Revenue</h4>
-                          <Stats data={revenueStats?.data?.revenueStats} width={200} height={300} />
+                          {(() => {
+                            if (revenueStats.loading) {
+                              <p>Loading...</p>;
+                            } else {
+                              <Stats data={revenueStats?.data?.revenueStats} width={200} height={300} />
+                            }
+                          })()}
+
                         </div>
 
                       </div>
@@ -369,41 +375,41 @@ function App() {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {userStats.data && (
-                          <>
-                            {userStats.data.userStats.map((person: any, personIdx: number) => (
-                            <tr key={person.name} className="border-none">
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="flex-shrink-0 h-10 w-10">
-                                    {personIdx + 1}
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{person.name}</div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {person.nps}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.nps}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.efficiency}%
-                              <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
-                                <div style={{ width: person.efficiency+"%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
+                          {userStats.data && (
+                            <>
+                              {userStats.data.userStats.map((person: any, personIdx: number) => (
+                                <tr key={person.name} className="border-none">
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="flex items-center">
+                                      <div className="flex-shrink-0 h-10 w-10">
+                                        {personIdx + 1}
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="text-sm text-gray-900">{person.name}</div>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    {person.nps}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.nps}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.efficiency}%
+                                    <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
+                                      <div style={{ width: person.efficiency + "%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
 
-                              </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.reportedissues}
-                              <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
-                                <div style={{ width: (person.completed/person.reportedissues)*100+"%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
+                                    </div>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.reportedissues}
+                                    <div className="overflow-hidden h-1 mb-1 text-xs flex rounded bg-purple-200">
+                                      <div style={{ width: (person.completed / person.reportedissues) * 100 + "%" }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-700"></div>
 
-                              </div>
-                              </td>
-                            </tr>
-                            )
-                            )}
-                          </>
-                        )}
+                                    </div>
+                                  </td>
+                                </tr>
+                              )
+                              )}
+                            </>
+                          )}
                         </tbody>
                       </table>
                     </div>
